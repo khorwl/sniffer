@@ -1,0 +1,4 @@
+The program is network sniffer.
+Program saves traffic into pcap format in output file, which can be open with wireshark
+
+main.py --help to get more
