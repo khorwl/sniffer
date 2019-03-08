@@ -1,11 +1,18 @@
 def handle_tcp(package):
+    package_value = parse_package(package)
+    print_parsed_package(package_value[:-1])
+
+    return package_value
+
+
+def parse_package(package):
     source_port = int.from_bytes(package[0:2], byteorder='big')
     destination_port = int.from_bytes(package[2:4], byteorder='big')
 
     sequence_number = int.from_bytes(package[4:8], byteorder='big')
     acknowledgment_number = int.from_bytes(package[8:12], byteorder='big')
 
-    data_offset = package[12] >> 4
+    data_offset = (package[12] >> 4) * 4
 
     ns = package[12] & 0x01
     cwr = package[13] >> 7
@@ -20,20 +27,16 @@ def handle_tcp(package):
     window_size = int.from_bytes(package[14:16], byteorder='big')
     check_sum = int.from_bytes(package[16:18], byteorder='big')
     urgent_pointer = int.from_bytes(package[18:20], byteorder='big')
-
-    package_value = [source_port, destination_port, sequence_number,
-                     acknowledgment_number, data_offset, ns, cwr, ece, urg,
-                     ack, psh, rst, syn, fin, window_size, check_sum, urgent_pointer]
-    print_parsed_package(package_value)
-
     data = package[20:]
 
-    return package_value
+    return [source_port, destination_port, sequence_number,
+                     acknowledgment_number, data_offset, ns, cwr, ece, urg,
+                     ack, psh, rst, syn, fin, window_size, check_sum, urgent_pointer, data]
 
 
 def print_parsed_package(args):
     source_port, destination_port, sequence_number, \
-    acknowledgment_number, data_offset, ns, cwr, ece, urg,\
+    acknowledgment_number, data_offset, ns, cwr, ece, urg, \
     ack, psh, rst, syn, fin, window_size, check_sum, urgent_pointer = args
 
     print('\n\rSourse port:', source_port)

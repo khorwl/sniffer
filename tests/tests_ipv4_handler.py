@@ -3,9 +3,9 @@ import unittest
 from handlers.ipv4_handler import parse_package
 
 
-class EthernetHandlerTests(unittest.TestCase):
+class IPv4HandlerTests(unittest.TestCase):
     def test_parse_package_should_return_right_value_field_package(self):
-        damp = b'\x45\x40\x00\x3c\x15\xa1\x00\x00\x36\x01\xa3\xca\x57\xf0\xa5\x57\xc0\xa8' \
+        dump = b'\x45\x40\x00\x3c\x15\xa1\x00\x00\x36\x01\xa3\xca\x57\xf0\xa5\x57\xc0\xa8' \
                b'\x0d\x26\x00\x00\x54\xfe\x00\x01\x00\x5d\x61\x62\x63\x64\x65\x66' \
                b'\x67\x68\x69\x6a\x6b\x6c\x6d\x6e\x6f\x70\x71\x72\x73\x74\x75\x76' \
                b'\x77\x61\x62\x63\x64\x65\x66\x67\x68\x69'
@@ -24,7 +24,7 @@ class EthernetHandlerTests(unittest.TestCase):
         expected_sourse_ip = '87.240.165.87'
         expected_destination_ip = '192.168.13.38'
 
-        package_value = parse_package(damp)
+        package_value = parse_package(dump)
 
         self.assertEquals(expected_version_num, package_value[0])
         self.assertEquals(expected_header_len, package_value[1])

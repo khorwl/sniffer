@@ -1,14 +1,19 @@
 def handle_udp(package):
-    source_port = package[0:2]
-    destination_port = package[2:4]
-
-    package_length = package[4:6]
-    check_sum = package[6:8]
-    data = package[8:]
-    package_value = source_port, destination_port, package_length, check_sum
-    print_parsed_package(package_value)
+    package_value = parse_package(package)
+    print_parsed_package(package_value[:-1])
 
     return package_value
+
+
+def parse_package(package):
+    source_port = int.from_bytes(package[0:2], byteorder='big')
+    destination_port = int.from_bytes(package[2:4], byteorder='big')
+
+    package_length = int.from_bytes(package[4:6], byteorder='big')
+    check_sum = int.from_bytes(package[6:8], byteorder='big')
+    data = package[8:]
+
+    return [source_port, destination_port, package_length, check_sum, data]
 
 
 def print_parsed_package(args):
